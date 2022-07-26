@@ -1,0 +1,104 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+ 
+}
+
+.container {
+  margin-top: 20px;
+  
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 700px;
+}
+
+
+h1 {
+  font-weight:2000;
+  text-align: center;
+  color: rgb(22, 2, 2);
+  font-size: 40px;
+  padding: 50px;
+}
+
+.task {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#head{
+  margin: 20px;
+}
+.btn {
+  height: 50px;
+  width: 40px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+.todo {
+  padding-left: 10px;
+  height: 50px;
+  width: 300px;
+  outline: none;
+  border: none;
+  font-size: 24px;
+}
+.tick{
+  background-color: rgb(117, 12, 29);
+
+}
+.del{
+  background-color: green;
+}
+li{
+  margin: 5px;
+}
+.check{
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+.fa-check{
+  pointer-events: none;
+}
+.fa-trash-can{
+  pointer-events: none;
+}
+.list{
+  width:200px;
+}
+
+
+#time{
+  font-size:120x;
+  height: 100px;
+}
+
+
+body{
+  background-image: url('./closed-blue-notebook-pen-yellow-background-top-view-mockup_106885-2117.webp');
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: xx-large;
+  background-position: center;
+  background-size: cover;
+  
+
+}
+
+#clock
+{
+  height: 100px;
+}
+.name
+{
+height: 100px;
+}
