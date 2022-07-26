@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+  </head>
+  <style>
+    * {
+      padding: 0%;
+      margin: 0px;
+    }
+    body {
+      font-family: serif;
+      background: url("scale\ image.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    #heading {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 40px;
+    }
+    #container {
+      background-color: rgb(166, 164, 160);
+      width: 550px;
+      height: 450px;
+      text-align: center;
+      border-radius: 10px;
+      margin: 80px auto 0px auto;
+      padding: 20px;
+      top: 50%;
+      left: 50%;
+      border: 1px solid black;
+      box-shadow: 3px 3px rgb(70, 2, 2);
+    }
+    
+    input {
+      margin-top: 15px;
+      box-shadow: 1px 2px black;
+      height: 25px;
+      width: 195px;
+      text-align: center;
+      font-size: 15px;
+    }
+    span {
+      font-size: larger;
+      font-weight: bolder;
+    }
+    #input,
+    #wtinput,
+    #tinput,
+    #kinput {
+      margin-left: 25px;
+    }
+    #inptype,
+    #restype,
+    #winptype,
+    #wrestype,
+    #tinptype,
+    #trestype,
+    #kinptype,
+    #krestype {
+      width: 200px;
+      margin-left: 25px;
+      text-align: center;
+      color: rgb(144, 30, 250);
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    #restype,
+    #wrestype,
+    #trestype,
+    #krestype {
+      margin-left: 12.5px;
+    }
+    h2 {
+      font-weight: bold;
+    }
+    @media screen and (max-width: 320px) {
+      h1{
+        left:50%;
+        text-align: center;
+      }
+      body{
+        background-size: cover;
+      }
+    }
+    @media screen and (max-width: 400px) {
+      #heading{
+        text-align: center;
+        padding-left: 70%;
+      }
+      body{
+        background-size: cover;
+      }
+    }
+    @media screen and (max-width: 430px) {
+      #heading{
+        text-align: center;
+        padding-left: 50%;
+      }
+      body{
+        background-size: cover;
+      }
+    }
+  </style>
+  <body>
+    <div class="whole">
+      <h1 id="heading"><u>Unit converter</u></h1>
+      <div id="container">
+        <h2>Temperature</h2>
+        <div class="temp">
+          <input type="text" placeholder="input" id="kinput" />
+          <span>=</span>
+          <input type="text" placeholder="result" id="kresult" />
+        </div>
+
+        <select id="kinptype">
+          <option value="ce">Celsius</option>
+          <option value="fa">Fahrenheit</option>
+          <option value="ke">Kelvin</option>
+        </select>
+        <select id="krestype">
+          <option value="ce">Celsius</option>
+          <option value="fa">Fahrenheit</option>
+          <option value="ke">Kelvin</option>
+        </select>
+
+        <!-- ------------ -->
+        <h2>Length</h2>
+        <div class="input">
+          <input type="text" placeholder="input" id="input" />
+          <span>=</span>
+          <input type="text" placeholder="result" id="result" />
+        </div>
+
+        <select id="inptype">
+          <option value="Meter">Meter</option>
+          <option value="KiloMeter">KiloMeter</option>
+          <option value="DeciMeter">DeciMeter</option>
+          <option value="CentiMeter">CentiMeter</option>
+          <option value="MilliMeter">MilliMeter</option>
+        </select>
+
+        <select id="restype">
+          <option value="Meter">Meter</option>
+          <option value="KiloMeter">KiloMeter</option>
+          <option value="DeciMeter">DeciMeter</option>
+          <option value="CentiMeter">CentiMeter</option>
+          <option value="MilliMeter">MilliMeter</option>
+        </select>
+        <h2>Weight</h2>
+
+        <div class="weight">
+          <input type="text" placeholder="input" id="wtinput" />
+          <span>=</span>
+          <input type="text" placeholder="result" id="wtresult" />
+        </div>
+        <select id="winptype">
+          <option value="kg">Kilogram</option>
+          <option value="g">Gram</option>
+          <option value="t">Tonne</option>
+          <option value="p">Pound</option>
+          <option value="o">Ounce</option>
+        </select>
+        <select id="wrestype">
+          <option value="kg">Kilogram</option>
+          <option value="g">Gram</option>
+          <option value="t">Tonne</option>
+          <option value="p">Pound</option>
+          <option value="o">Ounce</option>
+        </select>
+
+        <h2>Time</h2>
+        <div class="time">
+          <input type="text" placeholder="input" id="tinput" />
+          <span>=</span>
+          <input type="text" placeholder="result" id="tresult" />
+        </div>
+        <select id="tinptype">
+          <option value="s">Seconds</option>
+          <option value="m">Minutes</option>
+          <option value="h">Hours</option>
+          <option value="d">Days</option>
+          <option value="w">Weeks</option>
+          <option value="y">Years</option>
+        </select>
+        <select id="trestype">
+          <option value="s">Seconds</option>
+          <option value="m">Minutes</option>
+          <option value="h">Hours</option>
+          <option value="d">Days</option>
+          <option value="w">Weeks</option>
+          <option value="y">Years</option>
+        </select>
+      </div>
+    </div>
+    <script src="unit.js"></script>
+  </body>
+</html>
