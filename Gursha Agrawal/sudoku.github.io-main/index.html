@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="./indexStyle.css">
+</head>
+<body>
+    <header>
+        <h1>Sudoku</h1>
+        <div id="setup">
+            <div id="diff">
+                <h3>Choose Difficulty:</h3>
+                <label><input id="diff1" type="radio" name="diff" value="easy" checked>Easy</label>
+                <label><input id="diff2" type="radio" name="diff" value="medium" checked>Medium</label>
+                <label><input id="diff3" type="radio" name="diff" value="hard" checked>Hard</label>
+            </div>
+            <div id="time">
+                <h3>Choose Time:</h3>
+                <label><input id="time1" type="radio" name="time" value="3 MIN" checked>3 MIN</label>
+                <label><input id="time2" type="radio" name="time" value="5 MIN" checked>5 MIN</label>
+                <label><input id="time3" type="radio" name="time" value="10 MIN" checked>10 MIN</label>
+            </div>
+            <div id="theme">
+                <h3>Choose Theme:</h3>
+                <label><input id="theme1" type="radio" name="theme" value="Light" checked>Light</label>
+                <label><input id="theme2" type="radio" name="theme" value="Dark" checked>Dark</label>
+            </div>
+        </div>
+        <button id="button">NEW GAME</button>
+    </header>
+    <div id="stats">
+        <p id="timer"></p>
+        <p id="lives"></p>
+    </div>
+    <div id="game">
+        <div id="board"></div>
+         <div id="number-container" class="hidden">
+            <p id="one">1</p>
+            <p id="two">2</p>
+            <p id="three">3</p>
+            <p id="four">4</p>
+            <p id="five">5</p>
+            <p id="six">6</p>
+            <p id="seven">7</p>
+            <p id="eight">8</p>
+            <p id="nine">9</p>
+         </div>
+    </div>
+    <footer>
+        <h3>Made by Gursha Agrawal</h3>
+    </footer>
+    <script src="./index.js"></script>
+</body>
+</html>
