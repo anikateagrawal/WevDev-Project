@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: rgb(41, 39, 39);
+        font-family: "Open Sans", sans-serif;
+        background-image: url(https://source.unsplash.com/random/1600x900/?landscape);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .card {
+        background: rgba(0, 0, 0, 0.884);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 30px;
+        width: 100%;
+        max-width: 420px;
+        margin: 1rem;
+      }
+      .search {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .search button {
+        margin: 1rem;
+        border-radius: 50%;
+        border: none;
+        height: 2.5rem;
+        width: 2.5rem;
+        outline: none;
+        background-color: rgba(92, 88, 88, 0.644);
+        color: white;
+      }
+      .search button:hover {
+        background-color: rgb(92, 88, 88);
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+      }
+      input.search-bar {
+        border: none;
+        outline: none;
+        padding: 1rem 1rem;
+        border-radius: 50px;
+        width: 15rem;
+        height: 2.5rem;
+        background-color: rgba(92, 88, 88, 0.644);
+        color: white;
+        font-family: inherit;
+        font-size: 100%;
+      }
+      .description {
+        text-transform: capitalize;
+      }
+      .loading {
+        visibility: hidden;
+      }
+      .loading::after {
+        visibility: visible;
+        content: "Loading...";
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="search">
+        <input type="text" class="search-bar" placeholder="Search" />
+        <button>
+          <svg
+            stroke="currentColor"
+            fill="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z"
+              clip-rule="evenodd"
+            ></path>
+            <path
+              fill-rule="evenodd"
+              d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <div class="weather loading">
+        <h2 class="city">Weather in Delhi</h2>
+        <h1 class="temp">13°C</h1>
+        <div class="description">Cloudy</div>
+        <div class="humidity">Humid</div>
+        <div class="wind">Fast</div>
+      </div>
+    </div>
+    <script>
+      let weather = {
+        apiKey: "e2c1d873e17655abe9c9bdf6946db59d",
+        fetchWeather: function (city) {
+          fetch(
+            "https://api.openweathermap.org/data/2.5/weather?q=" +
+              city +
+              "&units=metric&appid=" +
+              this.apiKey
+          )
+            .then((response) => response.json())
+            .then((data) => this.displayWeather(data));
+        },
+        displayWeather: function (data) {
+          const { name } = data;
+          const { icon, description } = data.weather[0];
+          const { temp, humidity } = data.main;
+          const { speed } = data.wind;
+          // console.log(name,description,icon,temp,humidity,speed);
+          document.querySelector(".city").innerText =
+            "Weather in " + document.querySelector(".search-bar").value;
+          document.querySelector(".description").innerText = description;
+          document.querySelector(".temp").innerText = temp + "°C";
+          document.querySelector(".humidity").innerText =
+            "Humidity: " + humidity + "%";
+          document.querySelector(".wind").innerText =
+            "Wind Speed: " + speed + " km/h";
+          document.querySelector(".weather").classList.remove("loading");
+          document.body.style.backgroundImage =
+            "url('https://source.unsplash.com/random/1600x900/?" + name + ")";
+        },
+        search: function () {
+          this.fetchWeather(document.querySelector(".search-bar").value);
+        },
+      };
+      document
+        .querySelector(".search button")
+        .addEventListener("click", function () {
+          weather.search();
+        });
+      document
+        .querySelector(".search-bar")
+        .addEventListener("keyup", function (event) {
+          if (event.key == "Enter") {
+            weather.search();
+          }
+        });
+    </script>
+  </body>
+</html>
