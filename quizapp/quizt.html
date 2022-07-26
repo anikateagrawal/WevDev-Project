@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Test</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            user-select: none;
+        }
+
+        .display1 {
+            background-color: antiquewhite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: large;
+            flex-direction: column;
+        }
+
+        .display2 {
+            height: 100vh;
+            display: none;
+        }
+
+        #display3 {
+            background-color: coral;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+
+        #result,
+        .answers {
+            background-color: white;
+            width: 80%;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: xx-large;
+            padding: 20px;
+            margin: 20px;
+            flex-direction: column;
+        }
+
+        .answers {
+            width: 100%;
+        }
+
+        .box {
+            background-color: white;
+            width: 400px;
+            height: 200px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        #name {
+            height: 30px;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        #btn1,
+        #btn2,
+        #btn3 {
+            width: 100px;
+            height: 40px;
+            font-size: large;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #btn3 {
+            width: 200px;
+        }
+
+        #questions {
+            margin: auto;
+            margin-top: 20px;
+            background-color: blanchedalmond;
+            border-radius: 20px;
+            font-size: xx-large;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 10px 10px;
+        }
+
+        .obox {
+            display: flex;
+            justify-content: space-between;
+            /* align-items: center; */
+            flex-wrap: wrap;
+            margin-right: 20px;
+        }
+
+        .obox input[type="radio"] {
+            height: 20px;
+            width: 20px;
+        }
+
+        .b {
+            width: 300px;
+        }
+
+        .ques {
+            margin: 20px;
+        }
+
+        .btn {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input:disabled {
+            appearance: initial;
+            background-color: white;
+            border: 5px solid red;
+            border-radius: 50%;
+        }
+
+        input:checked:disabled {
+            appearance: initial;
+            background-color: white;
+            border: 5px solid green;
+            border-radius: 50%;
+        }
+
+        .list {
+            background-color: rgba(0, 0, 255, 0.546);
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+            height: 300px;
+            overflow: auto;
+        }
+
+        .list td {
+            width: 250px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        caption {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="display1">
+        <div class="box">
+            <div>
+                Enter Quiz Name: <input type="text" id="name"></div>
+            <button id="btn1">Submit</button>
+        </div>
+        <div class="list">
+            <table id="table" border="5">
+                <caption>Available Quizes</caption>
+            </table>
+        </div>
+    </div>
+    <div class="display2" id="display2">
+        <section id="questions">
+            <h1 align="center">Quiz</h1>
+        </section>
+        <div class="btn">
+            <button id="btn2">submit</button>
+        </div>
+        <div class="btn">
+            <a href="./quiz.html"><button id="btn3">Go To Create Quiz</button></a>
+        </div>
+    </div>
+    <div id="display3">
+        <div id="result"></div>
+        <div class="answers">
+            <h1 align="center">Answers</h1>
+        </div>
+        <div class="btn">
+            <a href="./quiz.html"><button id="btn3">Go To Create Quiz</button></a>
+        </div>
+    </div>
+    <script src="../js/firebase.js" type="module"></script>
+    <script type="module">
+        import { getDatabase, ref, get, set, update, remove, child } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-database.js";
+
+        const db = getDatabase();
+
+        document.getElementById("btn1").onclick = change;
+        var Name;
+        window.onload = quizlist;
+        function quizlist() {
+            var t = document.getElementById("table");
+            get(ref(db, "Quiz/")).then((snapshot) => {
+                snapshot.forEach(snapshot => {
+                    let tr = document.createElement("tr");
+                    t.appendChild(tr);
+                    let td = document.createElement("td");
+                    tr.appendChild(td);
+                    td.textContent = snapshot.ref._path.pieces_[1];
+                    td.onclick = () => {
+                        document.getElementById("name").value = td.textContent;
+                    }
+                })
+            })
+        }
+
+        if (!sessionStorage.getItem("name") == "") {
+            document.getElementsByClassName("display1")[0].style.display = "none";
+            document.getElementsByClassName("display2")[0].style.display = "block";
+            Name = sessionStorage.getItem("name");
+            read();
+        }
+
+        var ans = [];
+        var questions = [];
+
+
+        function read() {
+            get(ref(db, "Quiz/" + Name + "/")).then((snapshot) => {
+                snapshot.forEach(question => { questions.push(question.val()) }); fetch();
+            });
+        }
+
+        function change() {
+            Name = document.getElementById("name").value;
+            get(ref(db, "Quiz/" + Name)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementsByClassName("display1")[0].style.display = "none";
+                    document.getElementsByClassName("display2")[0].style.display = "block";
+                    sessionStorage.setItem("name", Name);
+                    read();
+                }
+                else {
+                    alert("Quiz not found. Please check Quiz Name");
+                }
+            })
+
+        }
+
+        function fetch() {
+            var sec = document.getElementById("questions");
+            questions.forEach(question => {
+                let n = question.No, q = question.Question, o1 = question.Option1, o2 = question.Option2, o3 = question.Option3, o4 = question.Option4, a = question.Answer;
+                let d = document.createElement("div");
+                d.className = "ques";
+                d.innerHTML = `<p id="Q${n}"></p>
+                <div class="obox">
+                <div class="b"><input type="radio" name="answer${n}" value="1">
+                <span id="O${n}1"></span>
+                </div>
+                <div class="b"><input type="radio" name="answer${n}" value="2">
+                <span id="O${n}2"></span>
+                </div>
+                <div class="b"><input type="radio" name="answer${n}" value="3">
+                <span id="O${n}3"></span></div>
+                <div class="b"><input type="radio" name="answer${n}" value="4">
+                <span id="O${n}4"></span></div> 
+                <input type="radio" name="answer${n}" value="0" checked style="display:none"></div>`;
+                sec.appendChild(d);
+                document.getElementById(`Q${n}`).textContent=`Q${n}. ${q}`;
+                document.getElementById(`O${n}1`).textContent=`${o1}`;
+                document.getElementById(`O${n}2`).textContent=`${o2}`;
+                document.getElementById(`O${n}3`).textContent=`${o3}`;
+                document.getElementById(`O${n}4`).textContent=`${o4}`;
+                ans[0] = n;
+                ans[n] = a;
+            });
+            var button = document.getElementById("btn2");
+            button.onclick = check;
+        }
+
+
+        function check() {
+            document.getElementById("display2").style.display = "none";
+            let n = ans[0];
+            let score = 0;
+            for (let i = 1; i <= n; i++) {
+                let nn = "answer" + i;
+                let a = document.querySelector(`input[name=${nn}]:checked`).value;
+                if (a == ans[i]) score++;
+            }
+            document.getElementById("display3").style.display = "flex";
+            document.getElementById("result").textContent = `Your score is ${score} out of ${n}`;
+            var sec = document.getElementsByClassName("answers")[0];
+            questions.forEach(question => {
+                // console.log(question);
+                let n = question.No, q = question.Question, o1 = question.Option1, o2 = question.Option2, o3 = question.Option3, o4 = question.Option4, a = question.Answer;
+                let d = document.createElement("div");
+                d.className = "ques";
+                d.innerHTML = `<p id="q${n}"></p>
+                <div class="obox">
+                <div class="b">
+                <input type="radio" name="ans${n}" value="0" checked style="display:none">
+                <input type="radio" name="ans${n}" value="1">
+                <span id="o${n}1"></span>
+                </div>
+                <div class="b"><input type="radio" name="ans${n}" value="2">
+                <span id="o${n}2"></span>
+                </div>
+                <div class="b"><input type="radio" name="ans${n}" value="3">
+                <span id="o${n}3"></span></div>
+                <div class="b"><input type="radio" name="ans${n}" value="4">
+                <span id="o${n}4"></span></div> 
+                </div>`;
+                sec.appendChild(d);
+                document.getElementById(`q${n}`).textContent=`Q${n}. ${q}`;
+                document.getElementById(`o${n}1`).textContent=`${o1}`;
+                document.getElementById(`o${n}2`).textContent=`${o2}`;
+                document.getElementById(`o${n}3`).textContent=`${o3}`;
+                document.getElementById(`o${n}4`).textContent=`${o4}`;
+
+                document.getElementsByName(`ans${n}`)[ans[n]].checked = true;
+                document.getElementsByName(`ans${n}`)[1].disabled = true;
+                document.getElementsByName(`ans${n}`)[2].disabled = true;
+                document.getElementsByName(`ans${n}`)[3].disabled = true;
+                document.getElementsByName(`ans${n}`)[4].disabled = true;
+                let b = document.querySelector(`input[name="answer${n}"]:checked`).value;
+                document.getElementsByName(`ans${n}`)[b].style.backgroundColor ="blue";
+                sessionStorage.clear();
+            });
+        }
+    </script>
+</body>
+
+</html>

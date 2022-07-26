@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .display1 {
+            background-color: antiquewhite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: large;
+        }
+
+        .box {
+            background-color: white;
+            width: 400px;
+            height: 200px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        #btn1 {
+            width: 100px;
+            height: 40px;
+            font-size: large;
+            border-radius: 10px;
+        }
+
+        #create {
+            width: 1000px;
+            background-color: white;
+            border-radius: 20px;
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 10px 10px;
+        }
+
+        .display2 {
+            height: 100vh;
+            display: none;
+            background-color: cornflowerblue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-repeat: no-repeat;
+        }
+
+        #create h1 {
+            color: brown;
+            margin: 10px;
+        }
+
+        .q {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 20px;
+        }
+
+        #question {
+            display: block;
+            width: 50%;
+            height: 40px;
+            outline: none;
+            border: 2px solid red;
+            border-radius: 20px;
+            padding-left: 10px;
+        }
+        .o{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        
+        }
+        .options {
+            width: 60%;
+            height: 40px;
+            outline: none;
+            border: 2px solid red;
+            border-radius: 20px;
+            padding: 10px;
+        }
+
+        .btn {
+            color: white;
+            background-color: cornflowerblue;
+            border-radius: 20px;
+            padding: 0px 20px;
+            height: 40px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #name{
+            height: 30px;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .button {
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .l{
+            justify-content: space-evenly;
+        }
+        input[type="radio"]{
+            height: 20px;
+            width: 20px;
+            margin: 5px;
+        }
+        label[for="option"]
+        {
+            width: 50%;
+            text-align: right;
+        }
+        #btn1{
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="display1">
+        <div class="box">
+            <div>
+                Enter Quiz Name: <input type="text" id="name"></div>
+            <button id="btn1">Submit</button>
+        </div>
+    </div>
+    <div class="display2">
+        <main id="create">
+            <h1 align="center">
+                Create Quiz
+            </h1>
+            <div class="q">
+                <label for="question">Enter Question:</label>
+                <input type="text" placeholder="Enter your question" name="question" id="question">
+            </div>
+            <div class="q l">
+                <div class="o">
+                    <label for="option">Enter Option1:</label>
+                    <input type="text" placeholder="Enter option1" name="option" class="options" id="option1">
+                </div>
+                <div class="o">
+                    <label for="option" >Enter Option2:</label>
+                    <input type="text" placeholder="Enter option2" name="option" class="options" id="option2">
+                </div>
+            </div>
+            <div class="q l">
+                <div class="o">
+                    <label for="option">Enter Option3:</label>
+                    <input type="text" placeholder="Enter option3" name="option" class="options" id="option3">
+                </div>
+                <div class="o">
+                    <label for="option" >Enter Option4:</label>
+                    <input type="text" placeholder="Enter option4" name="option" class="options" id="option4">
+                </div>
+            </div>
+            <div class="q l">
+            <label for="answer">Choose correct option:</label>
+            <div class="o r">
+            <input type="radio" value="1" name="answer" checked>Option1</div>
+            <div class="o r">
+            <input type="radio" value="2" name="answer">Option2</div>
+            <div class="o r">
+            <input type="radio" value="3" name="answer">Option3</div>
+            <div class="o r">
+            <input type="radio" value="4" name="answer">Option4</div>
+        </div>
+            <div class="button">
+                <button class="btn" id="add">Add</button>
+                <button class="btn" id="read">Read</button>
+                <button class="btn" id="update">Update</button>
+                <button class="btn" id="del">Delete Last</button>
+                <a href="./quizt.html"><button class="btn">Test Quiz</button></a>
+            </div>
+        </main>
+    </div>
+    <script src="../js/firebase.js" type="module"></script>
+    <script type="module">
+        import { getDatabase, ref, get, set, update, remove, child } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-database.js";
+        const db = getDatabase();
+        document.getElementById("btn1").onclick = change;
+        var q, o1, o2, o3, o4, a, Name, no = 0;
+        document.getElementById("add").onclick = addquestion;
+        document.getElementById("read").onclick = readquestion;
+        document.getElementById("update").onclick = updatequestion;
+        document.getElementById("del").onclick = dellast;
+
+        if (!sessionStorage.getItem("name") == "") {
+            document.getElementsByClassName("display1")[0].style.display = "none";
+            document.getElementsByClassName("display2")[0].style.display = "flex";
+            Name = sessionStorage.getItem("name");
+        }
+        var questions = [];
+        function readNo() {
+            get(ref(db, "Quiz/" + Name + "/")).then((snapshot) => {
+                snapshot.forEach(question => { questions.push(question.val()) }); no = questions[questions.length - 1].No;
+            });
+        }
+        function getdata() {
+            q = document.getElementById("question").value;
+            o1 = document.getElementById("option1").value;
+            o2 = document.getElementById("option2").value;
+            o3 = document.getElementById("option3").value;
+            o4 = document.getElementById("option4").value;
+            a = document.querySelector('input[name="answer"]:checked').value;
+        }
+        function clear() {
+            document.getElementById("question").value = "";
+            document.getElementById("option1").value = "";
+            document.getElementById("option2").value = "";
+            document.getElementById("option3").value = "";
+            document.getElementById("option4").value = "";
+        }
+        function change() {
+            document.getElementsByClassName("display1")[0].style.display = "none";
+            document.getElementsByClassName("display2")[0].style.display = "flex";
+            Name = document.getElementById("name").value;
+            sessionStorage.setItem("name", Name);
+            readNo();
+        }
+        window.onload=readNo;
+        function addquestion() {
+            // readNo();
+            getdata();
+            no++;
+            set(ref(db, "Quiz/" + Name + "/" + no), {
+                No: no,
+                Question: q,
+                Option1: o1,
+                Option2: o2,
+                Option3: o3,
+                Option4: o4,
+                Answer: a
+            }).then(() => {
+                alert("Question added Successfully");
+            }).catch((error) => alert("unsuccessful", error));
+            clear();
+        }
+        function readquestion(){
+            let up=prompt("Enter question number to read.");
+            if(up=="")alert("Field cannot be empty");
+            else{
+                get(ref(db,"Quiz/"+Name+"/"+up)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    document.getElementById("question").value = snapshot.val().Question;
+            document.getElementById("option1").value = snapshot.val().Option1;
+            document.getElementById("option2").value = snapshot.val().Option2;
+            document.getElementById("option3").value = snapshot.val().Option3;
+            document.getElementById("option4").value = snapshot.val().Option4;
+            document.querySelector(`input[value="${snapshot.val().Answer}"]`).checked=true;
+
+        }
+                else{alert("no question found")}
+            }).catch((error)=>{alert("unsuccessful",error)});
+            }
+        }
+        function updatequestion(){
+            let up=prompt("Enter question number to update.");
+            getdata();
+            update(ref(db, "Quiz/" + Name + "/" + up), {
+                No: up,
+                Question: q,
+                Option1: o1,
+                Option2: o2,
+                Option3: o3,
+                Option4: o4,
+                Answer: a
+            }).then(() => {
+                alert("Question updated Successfully");
+            }).catch((error) => alert("unsuccessful", error));
+            clear();
+        }
+        function dellast()
+        {
+            // readNo();
+            remove(ref(db,"Quiz/"+Name+"/"+(no--))).then(alert("Last Question deleted")).catch((error)=>{alert("unsuccessful",error)});
+        }
+    </script>
+</body>
+
+</html>
